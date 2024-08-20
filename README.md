@@ -65,7 +65,51 @@ class SimplerMqttService : MqttBaseService {
 3. IMqttMessageBaseProxy how to use and init
    - IMqttMessageBaseProxy this proxy use to send message or recive MqttService
    - IMqttMessageBaseProxy this proxy use be subTopic or unsubTopic
-   - Init and how to used by example SimpleMessageProxy object
+   - Init and how to used by example SimpleMessageProxy object [![link](https://github.com/KilleTom/MQTTCommandHelper/blob/master/app/src/main/java/com/killetom/mqtt/command/helper/SimplerMqttService.kt#SimpleMessageProxy)
+   - IMqttMessageBaseProxy must used `requestClient:(()-> IMqttAsyncClient?)?` this unit to request Mqttclient
+
+4. MQTTCommandBaseProxy
+   - this proxy init MqttClient and make mqtt connect
+   - if you want to listen mqtt connection status action you must be use `setConnectionChannelCallBack` function
+     ```kotlin
+     
+     class SimplerMqttService : MqttBaseService {
+
+       private constructor(){
+           getMQTTCommandProxyAction().setConnectionChannelCallBack(object :IMqttConnectionChannelCallBack{
+               override fun connectionCompleteActionCall(status: Boolean, errorMessage: String?) {
+                  println("IMqttConnectionChannelCallBack-status$status errorMessage:${errorMessage}")
+
+                   if (status){
+                       getMqttMessageProxy().subscribeMqttTopic("testtopic",0)
+
+                       getMqttMessageProxy()
+                                .sendMessage("testtopic","hello",1,
+                                      successAction = {println("send hello sucess") },
+                                      failAction = {println("send hellow fail ${it.message}")})
+                   }
+               }
+
+            override fun loseConnectionActionCall(t: Throwable) {
+                t.printStackTrace()
+               }
+
+           })
+       }
+      }
+     ```
+   - if you want to do orther logic by mqtt init and connected, make sure extend MQTTCommandBaseProxy or IMqttCommandProxyAction
+
+5. in the end `MqttBaseService.closeService()` if you want to release something you can override  `MqttBaseService.destroy()` . by the way  `MqttBaseService.destroy()` this function was abstract, but you can just make this function be empty funtion.
+
+## end
+enjoy the day and good luck
+If you have any good suggestions or concerns, please feel free to contact me
+
+    
+
+
+     
   
      
      
