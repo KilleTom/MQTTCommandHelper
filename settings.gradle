@@ -1,0 +1,20 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven{url "https://jitpack.io"}
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven{url "https://jitpack.io"}
+        maven{url "com.github.dcendents.android-maven"}
+    }
+}
+rootProject.name = "MQTTCommandHelper"
+include ':app'
+include ':MQTTCommandHelperLib'
