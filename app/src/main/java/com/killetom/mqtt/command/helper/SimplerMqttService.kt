@@ -48,6 +48,7 @@ class SimplerMqttService : MqttBaseService {
     }
 
     companion object{
+
         val instance by lazy { SimplerMqttService() }
     }
 
@@ -68,7 +69,7 @@ class SimplerMqttService : MqttBaseService {
         }
 
         override fun subscribeMqttTopic(topic: Array<String>, qos: IntArray?) {
-
+            requestClient?.invoke()?.subscribe(topic,qos)
         }
 
         override fun justSendMessage(topic: String, message: MqttMessage) {
